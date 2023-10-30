@@ -55,7 +55,6 @@ def profile():
 def profile_post():
     user = flask_login.current_user
     todo_text = request.form.get("todoText")
-    print("Got todoText", todo_text)
 
     todo = Todo(user.id, todo_text)
 
