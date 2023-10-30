@@ -25,9 +25,6 @@ def login_post():
     password = request.form.get("password")
     user = User.query.filter_by(username=username).first()
 
-    print(username)
-    print(user)
-
     if not user:
         return redirect(url_for("login", msg="User not found"))
 
