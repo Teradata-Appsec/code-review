@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Todoer - Admin{% endblock %}
+
+{% block content %}
+    <h1>Admin</h1>
+
+    <ul>
+        <li><a href="{{ url_for('create_user') }}" class="link-primary">Create User</a></li>
+        <li><a href="#" class="link-primary">Delete User</a></li>
+    </ul>
+
+{% endblock content %}

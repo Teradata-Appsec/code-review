@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Todoer - Create User{% endblock %}
+
+{% block content %}
+    <form method="post">
+        <h2>New User</h2>
+        <div class="form-group form-check">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" id="username" name="username" class="form-control" />
+        </div>
+
+        <div class="form-group form-check">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" id="password" name="password_hash" class="form-control" />
+        </div>
+
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="is-admin">
+            <label class="form-check-label" for="is-admin">Admin</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+{% endblock content %}
+

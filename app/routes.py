@@ -19,7 +19,7 @@ def login():
     return render_template("login.html", msg=msg)
 
 
-@app.route("/login", methods={"POST"})
+@app.route("/login", methods=["POST"])
 def login_post():
     username = request.form.get("username")
     password = request.form.get("password")
@@ -62,3 +62,35 @@ def profile_post():
     db.session.commit()
 
     return redirect(url_for("profile"))
+
+
+@app.route("/admin")
+@flask_login.login_required
+def admin():
+    user = flask_login.current_user
+    if user.admin:
+        return render_template("admin.html")
+    return redirect(url_for("profile"))
+
+
+@app.route("/admin/create-user")
+@flask_login.login_required
+def create_user():
+    user = flask_login.current_user
+    if user.admin:
+        return render_template("create-user.html")
+    return redirect(url_for("profile"))
+
+
+@app.route("/admin/create-user", methods=["POST"])
+@flask_login.login_required
+def create_user_post():
+    data = request.form
+    print(data)
+
+    new_user = User(**data)
+
+    db.session.add(new_user)
+    db.session.commit()
+
+    return redirect(url_for("admin"))

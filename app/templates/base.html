@@ -1,14 +1,17 @@
-{% extends "bootstrap/base.html" %}
+{%- extends "bootstrap/base.html" %}
 
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>{% block title %}{{ title }}{% endblock title %}</title>
-    </head>
+{% block title %}Todoer{% endblock %}
 
-    <body>
-        {% block content %}
-        {% endblock content %}
-    </body>
-</html>
+{% block navbar %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="navbar-brand">Todoer</div>
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('profile')}}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout')}}">Logout</a>
+                    </li>
+                </ul>
+    </nav>
+{% endblock %}

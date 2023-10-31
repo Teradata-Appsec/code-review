@@ -6,6 +6,7 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), nullable=False, unique=True)
     password_hash = db.Column(db.String(200))
+    admin = db.Column(db.Boolean)
 
     def __repr__(self):
         return self.username
