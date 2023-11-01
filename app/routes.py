@@ -1,11 +1,10 @@
 from flask import render_template, request, redirect, url_for
 import flask_login
-from sqlalchemy import select
 from app import app
 from app.models.todo import Todo
 
 from app.models.user import User
-from app import db
+from app import db, login_manager
 
 
 @app.route("/")
@@ -15,8 +14,9 @@ def index():
 
 @app.route("/login")
 def login():
+    user = flask_login.current_user
     msg = request.args.get("msg")
-    return render_template("login.html", msg=msg)
+    return render_template("login.html", msg=msg, user=user)
 
 
 @app.route("/login", methods=["POST"])
@@ -64,12 +64,32 @@ def profile_post():
     return redirect(url_for("profile"))
 
 
+@app.route("/register")
+def register():
+    user = flask_login.current_user
+    if user.is_authenticated:
+        return redirect(url_for("profile"))
+    return render_template("register.html", user=user)
+
+
+@app.route("/register", methods=["POST"])
+def register_post():
+    data = request.form
+
+    new_user = User(**data)
+
+    db.session.add(new_user)
+    db.session.commit()
+
+    return redirect(url_for("login", msg="Account created"))
+
+
 @app.route("/admin")
 @flask_login.login_required
 def admin():
     user = flask_login.current_user
     if user.admin:
-        return render_template("admin.html")
+        return render_template("admin.html", user=user)
     return redirect(url_for("profile"))
 
 
@@ -78,7 +98,7 @@ def admin():
 def create_user():
     user = flask_login.current_user
     if user.admin:
-        return render_template("create-user.html")
+        return render_template("create-user.html", user=user)
     return redirect(url_for("profile"))
 
 
@@ -86,7 +106,11 @@ def create_user():
 @flask_login.login_required
 def create_user_post():
     data = request.form
-    print(data)
+    username = data.get("username")
+
+    existing_user = User.query.filter_by(username=username).first()
+    if existing_user:
+        return redirect(url_for("login", msg=f"User {username} already exists"))
 
     new_user = User(**data)
 
@@ -94,3 +118,8 @@ def create_user_post():
     db.session.commit()
 
     return redirect(url_for("admin"))
+
+
+@login_manager.unauthorized_handler
+def unauthorized_handler():
+    return redirect(url_for("login"))

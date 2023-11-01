@@ -1,31 +1,21 @@
 {% extends "base.html" %}
 
-{% block title %}Todoer - Login{% endblock %}
+{% block title %}Todoer - Register{% endblock %}
 
 {% block content %}
-    {% if msg %}
-        <div>
-            {{msg}}
-        </div>
-    {% endif %}
-
     <form method="post">
-        <div class="mb-3">
+        <h2>Register</h2>
+        <div class="form-group form-check">
             <label for="username" class="form-label">Username</label>
             <input type="text" id="username" name="username" class="form-control" />
         </div>
 
-        <div class="mb-3">
+        <div class="form-group form-check">
             <label for="password" class="form-label">Password</label>
-            <input type="password" id="password" name="password" class="form-control" />
+            <input type="password" id="password" name="password_hash" class="form-control" />
         </div>
 
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
-
-    <div>
-        <a href="{{ url_for('register') }}">Register</a>
-    </div>
-
 
 {% endblock content %}
