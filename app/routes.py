@@ -110,7 +110,7 @@ def create_user_post():
 
     existing_user = User.query.filter_by(username=username).first()
     if existing_user:
-        return redirect(url_for("login", msg=f"User {username} already exists"))
+        return redirect(url_for("admin"))
 
     new_user = User(**data)
 
