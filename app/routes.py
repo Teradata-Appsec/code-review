@@ -15,6 +15,8 @@ def index():
 @app.route("/login")
 def login():
     user = flask_login.current_user
+    if user.is_authenticated:
+        return redirect(url_for("profile"))
     msg = request.args.get("msg")
     return render_template("login.html", msg=msg, user=user)
 
@@ -30,7 +32,7 @@ def login_post():
 
     if user.password_hash == password:
         flask_login.login_user(user)
-        return redirect(url_for("index"))
+        return redirect(url_for("profile"))
 
     return redirect(url_for("login", msg="Invalid login credentials"))
 
@@ -42,12 +44,11 @@ def logout():
 
 
 @app.route("/profile")
+@flask_login.login_required
 def profile():
     user = flask_login.current_user
-    if user.is_authenticated:
-        todos = Todo.query.filter_by(user_id=user.id).all()
-        return render_template("profile.html", user=user, todos=todos)
-    return redirect(url_for("login"))
+    todos = Todo.query.filter_by(user_id=user.id).all()
+    return render_template("profile.html", user=user, todos=todos)
 
 
 @app.route("/profile", methods=["POST"])
