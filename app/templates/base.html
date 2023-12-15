@@ -11,7 +11,7 @@
                     <li>
                         <a href="{{ url_for('profile')}}">Home</a>
                     </li>
-                    {% if user.is_authenticated %}
+                    {% if user.admin %}
                     <li>
                         <a href="{{ url_for('admin')}}">Admin</a>
                     </li>

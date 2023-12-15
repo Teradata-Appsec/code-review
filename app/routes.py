@@ -77,7 +77,7 @@ def register():
 def register_post():
     data = request.form
 
-    new_user = User(**data)
+    new_user = user_from_form(data)
 
     db.session.add(new_user)
     db.session.commit()
@@ -113,7 +113,7 @@ def create_user_post():
     if existing_user:
         return redirect(url_for("admin"))
 
-    new_user = User(**data)
+    new_user = user_from_form(data)
 
     db.session.add(new_user)
     db.session.commit()
@@ -124,3 +124,17 @@ def create_user_post():
 @login_manager.unauthorized_handler
 def unauthorized_handler():
     return redirect(url_for("login"))
+
+
+def user_from_form(data):
+    username = data.get("username")
+    password_hash = data.get("password_hash")
+    admin = data.get("admin")
+
+    new_user = User()
+    new_user.username = username
+    new_user.password_hash = password_hash
+    if admin == "on":
+        new_user.admin = True
+
+    return new_user
